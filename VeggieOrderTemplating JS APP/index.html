@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Template testing</title>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="node_modules/handlebars/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+<script id="veggie-template" type="text/x-handlebars-template">
+    <p>You want to order: </p>
+    <ul>
+        {{#each vegetables}}
+        <li>{{name}} with price per kg: {{price}} euros</li>
+        {{/each}}
+    </ul>
+</script>
+<div class="wrapper">
+    <form id="formInput">
+        <label for="name"> Enter veggie </label>
+        <input type="text" id="name">
+        <label for="price"> Enter price </label>
+        <input type="number" id="price">
+    </form>
+
+    <button type="button" id="butt">Send</button>
+    <button type="button" id="populate" disabled>Show order</button>
+    <div id="container"></div>
+</div>
+<script>
+    startApp();
+    let vegetables = [];
+
+    async function startApp() {
+        let source = $('#veggie-template').html();
+        let container = $('#container');
+
+        let template = Handlebars.compile(source);
+        let createContext = await function createContext() {
+            if($('#name').val()==parseInt($('#name').val())){
+                console.log('numberrrr');
+                container.text('You must enter valid veggie')
+                container.css('display','block');
+            return;
+            }
+
+            if($('#price').val()!=parseFloat($('#price').val())){
+                console.log('numberrrr');
+                container.text('You must enter valid price')
+                container.css('display','block');
+                return;
+            }
+            if($('#name').val()!=''&&$('#price').val()!=''){
+               if(vegetables.some(x=>x['name']===($('#name').val()))){
+                   container.text('You cannot enter the same veggie twice')
+                   container.css('display','block');
+                   return;
+               }
+                vegetables.push({
+                    name: $('#name').val(),
+                    price: $('#price').val()
+                })
+                console.log(vegetables);
+                $('#formInput').trigger('reset');
+                $('#populate').removeAttr('disabled')
+                container.css('display','none');
+
+            }
+            else if($('#name').val()===''&&$('#price').val()===''){
+                container.text('You must enter veggie and price')
+                container.css('display','block');
+            }
+            else if($('#name').val()===''){
+                container.text('You must enter veggie')
+                container.css('display','block');
+            }else if($('#price').val()===''){
+                container.text('You must enter price')
+                container.css('display','block');
+            }
+        }
+
+        function populate() {
+
+                let context = {vegetables}
+            container.css('display','block');
+
+                container.html(template(context))
+                vegetables = [];
+                console.log(vegetables);
+            $('#populate').attr('disabled','disabled')
+
+        }
+
+        $('#butt').click(createContext);
+        $('#populate').click(populate);
+    }
+</script>
+</body>
+</html>

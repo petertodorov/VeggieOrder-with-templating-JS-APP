@@ -1,0 +1,45 @@
+
+.wrapper,#formInput, #container {
+
+    background: darkgrey;
+    width:20rem;
+    border-radius: 0.4rem;
+}
+
+.wrapper{
+    width:25rem;
+    padding:0.5rem;
+}
+
+#formInput input, button, label{
+    margin:0.5rem 0;
+
+}
+#formInput input{
+    display:block;
+}
+button{
+    background: #fcfffa;
+    margin:0.5rem;
+    padding:0.5rem;
+    border: none;
+    border-radius: 0.4rem;
+    color:darkgray;
+    font-weight: bold;
+}
+label{
+    color:white;
+    font-weight: bold;
+}
+
+#container{
+    display:none;
+    background: orange;
+    margin:0.5rem 0;
+    padding:0.6rem;
+    color:white;
+    font-weight: bold;
+}
+li{
+    list-style: none;
+}
